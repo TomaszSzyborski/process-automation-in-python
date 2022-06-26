@@ -9,6 +9,11 @@ class Book:
     def __str__(self):
         return self.title
 
+    def __add__(self, other):
+        return self.pages + other
+
+    def __radd__(self, other):
+        return self.pages + other
 
 # chcemy aby sum() zwracało nam sumę stron w kolekcji książek
 book1 = Book('Fluency', 381)
