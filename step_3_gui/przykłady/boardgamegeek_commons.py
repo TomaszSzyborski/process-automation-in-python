@@ -1,5 +1,6 @@
 import csv
 from collections import namedtuple
+from time import sleep
 from typing import List
 
 from selene import browser, config
@@ -8,7 +9,7 @@ from selene.support.jquery_style_selectors import s
 Game = namedtuple("Game", ["title", "ownership"])
 
 config.browser_name = 'chrome'
-config.base_url = 'https://www.boardgamegeek.com/'
+# config.base_url = 'https://www.boardgamegeek.com/'
 config.timeout = 10
 
 def login():
@@ -35,3 +36,8 @@ def fetch_games_from_file(file_name="games.csv") -> List[Game]:
             games.append(Game(game_data["Title"], game_data["Do I Have It?"]))
     return games
 
+
+
+login()
+go_to_collection()
+sleep(5)

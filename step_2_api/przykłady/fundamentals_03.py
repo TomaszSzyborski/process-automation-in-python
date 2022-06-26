@@ -1,9 +1,18 @@
-import datetime
-
 import requests as r
 
-url = "http://localhost:8080/query_params?first_name=Olga&last_name=Patyna"
-response = r.get(url)
-assert response.status_code == 200
+# f_name = "Ada"
+# l_name = "Droś"
 
-print(response.json())
+users = [
+    {
+        "f_name": "Ada",
+        "l_name": "Droś"
+    }
+]
+
+for user in users:
+    url = f"http://localhost:8080/query_params?first_name={user['f_name']}&last_name={user['l_name']}"
+    response = r.get(url)
+    assert response.status_code == 200
+
+    print(response.json())

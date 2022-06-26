@@ -1,43 +1,38 @@
 import datetime
 
 import requests as r
+from faker import Faker
 from requests.auth import HTTPBasicAuth
 
+fake = Faker()
 url = "http://localhost:8080"
-response = r.get(f"{url}/users/me/")
+user = {
+  "username": fake.name(),
+  "password": "string"
+}
+response = r.post(f"{url}/register", json=user)
 
-print(response.headers)
-print(response.json())
+assert response.status_code == 201
 print(response.status_code)
-
-response = r.get(f"{url}/users/some_secret_resource/1")
-print(response.headers)
 print(response.json())
-print(response.status_code)
 
+registration_key = response.json()['key']
+print(registration_key)
 
-url = "http://localhost:8080"
-response = r.get(f"{url}/users/me/", auth=HTTPBasicAuth("", ""))
+response = r.get(f"{url}/for_logged_in_users_only")
+assert response.status_code == 401
+assert response.json()['message'] == "I find your lack of cookie disturbing..."
 
-print(response.headers)
+response = r.post(f"{url}/login", json=user)
+assert response.status_code == 202
 print(response.json())
-print(response.status_code)
+print(response.cookies)
+for cookie in response.cookies:
+    print(cookie)
 
-response = r.get(f"{url}/users/some_secret_resource/1", auth=HTTPBasicAuth("",""))
-print(response.headers)
+response = r.get(f"{url}/for_logged_in_users_only", cookies=response.cookies)
+print(response.status_code)
 print(response.json())
-print(response.status_code)
-
-
-
-url = "http://localhost:8080"
-response = r.get(f"{url}/users/me/", auth=HTTPBasicAuth("SeniorSiarra", "JurekKiler"))
-
+print(response.cookies)
 print(response.headers)
-print(response.json())
-print(response.status_code)
-
-response = r.get(f"{url}/users/some_secret_resource/1", auth=HTTPBasicAuth("SeniorSiarra","JurekKiler"))
-print(response.headers)
-print(response.json())
-print(response.status_code)
+print(response.cookies[0]['session'])
