@@ -81,8 +81,8 @@ def add_game(game: Game):
 
 
 
-username = "tomaszA5"
-password = "tomaszA5"
+username = "<some_username>"
+password = "<some_username>"
 fake = Faker()
 env = f"http://boardgamegeek.com/"
 config.timeout = 10
